@@ -1,0 +1,148 @@
+#include <stdio.h>
+
+ 
+float calcularDescuento(float total, float porcentaje) {
+
+    // Se divide el porcentaje entre 100 para obtener el decimal (Mates básicas hermano)
+
+    return total * (porcentaje / 100.0);
+
+}
+ 
+void imprimirTicket(float subtotal, float descuento, float total) {
+
+    printf("-----------------------------------\n");
+
+    printf("         TICKET DE COMPRA          \n");
+
+    printf("-----------------------------------\n");
+
+    printf("Subtotal:           $%.2f\n", subtotal);
+
+    printf("Descuento aplicado: $%.2f\n", descuento);
+
+    printf("-----------------------------------\n");
+
+    printf("TOTAL A PAGAR:      $%.2f\n", total);
+
+    printf("-----------------------------------\n");
+
+    printf("Le atendió Jhon C. Odigo \n");
+
+    printf("Gracias por comprar en Tiendas GatoBarato \n");
+
+    printf("-----------------------------------\n");
+
+}
+
+int main() {
+
+    int opcion;
+
+    float subtotal, descuento, total_final;
+
+    do {
+
+        printf("SISTEMA DE DESCUENTOS EN TIENDA\n");
+
+        printf("-----------------------------------\n");
+
+        printf("1. Cliente Regular   (0%% de descuento)\n");
+
+        printf("2. Cliente Frecuente (10%% de descuento)\n");
+
+        printf("3. Cliente VIP       (20%% de descuento)\n");
+
+        printf("4. Salir \n");
+
+        printf("-----------------------------------\n");
+
+        printf("Seleccione su tipo de membresia: ");
+
+        scanf("%d", &opcion);
+
+        if (opcion >= 1 && opcion <= 3) {
+
+            printf("Ingrese el monto total de la compra (Subtotal): $");
+
+            scanf("%f", &subtotal);
+
+             // If por si se quieren pasar de listos y ponen 0 o negativos
+
+            if (subtotal < 0) {
+
+                printf("[ADVERTENCIA] El monto de la compra no puede ser negativo.\n");
+
+                // Acá cambiamos opcion un ratito para que no procese el switch y reinicie el menú antirobos aywey
+
+                opcion = 0; 
+
+            }
+
+        }
+
+        switch (opcion) {
+
+            case 1:
+
+                // Cliente Regular: 0% descuento
+
+                descuento = calcularDescuento(subtotal, 0.0);
+
+                total_final = subtotal - descuento;
+
+                imprimirTicket(subtotal, descuento, total_final);
+
+                break;
+
+            case 2:
+
+                // Cliente Frecuente: 10% descuento
+
+                descuento = calcularDescuento(subtotal, 10.0);
+
+                total_final = subtotal - descuento;
+
+                imprimirTicket(subtotal, descuento, total_final);
+
+                break;
+
+            case 3:
+
+                // Cliente VIP Super Mega Importante: 20% descuento
+
+                descuento = calcularDescuento(subtotal, 20.0);
+
+                total_final = subtotal - descuento;
+
+                imprimirTicket(subtotal, descuento, total_final);
+
+                break;
+
+            case 4:
+
+                printf("Gracias por usar el sistema de cobro. ¡Ta' Lue'!\n");
+
+                break;
+
+            case 0:
+
+                // Este está por si meten un monto negativo, se reinicia el proceso con el opcion 0 de ántes
+
+                break;
+
+            default:
+
+                printf("Opcion no valida. Ingrese un numero del 1 al 4.\n");
+
+                break;
+
+        }
+
+    } while (opcion != 4);
+
+    return 0;
+
+}
+
+ 
