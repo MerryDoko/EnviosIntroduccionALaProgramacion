@@ -1,0 +1,68 @@
+#include <stdio.h>
+void consultarSaldo(float saldo) {
+    printf("Tu saldo actual es: $%.2f\n", saldo);
+}
+float depositar(float saldoActual, float monto) {
+    if (monto > 0) {
+        saldoActual = saldoActual + monto;
+        printf("Se depositaron correctamente $%.2f mxn a tu cuenta.\n", monto);
+    } else {
+        printf("El monto a depositar debe ser mayor a cero.\n");
+    }
+    return saldoActual;
+}
+float retirar(float saldoActual, float monto) {
+    if (monto <= 0) {
+        printf("Error. El monto a retirar debe ser mayor a cero.\n");
+    } else if (monto > saldoActual) {
+        // Aquí si el monto es mayor que el saldo, se rechaza la operación
+        printf("Fondos insuficientes. Intentas retirar $%.2f pero solo tienes $%.2f.\n", monto, saldoActual);
+    } else {
+        // Acá, si hay fondos suficientes y el monto es válido, se hace el retiro
+        saldoActual = saldoActual - monto;
+        printf("Has retirado $%.2f de tu cuenta.\n", monto);
+    }
+    return saldoActual;
+}
+int main() {
+    // Un saldo todo random pa probar
+    float saldo = 1529.23;
+    int opcion;
+    float monto;
+    do {
+        printf("---------------------------------------\n");
+        printf("4. Gestor de Finanzas Personales (Simulador)\n");
+        printf("--------------------------------------- \n");
+        printf("1. Consultar Saldo\n");
+        printf("2. Depositar Dinero\n");
+        printf("3. Retirar Dinero\n");
+        printf("4. Salir\n");
+        printf("---------------------------------------\n");
+        printf("Ingrese una opcion: ");
+        scanf("%d", &opcion);
+        switch (opcion) {
+            case 1:
+                consultarSaldo(saldo);
+                break;
+            case 2:
+                printf("Ingrese el monto a depositar: $");
+                scanf("%f", &monto);
+                // Se actualiza 'saldo' con lo que se devuelva en la función
+                saldo = depositar(saldo, monto);
+                break;
+            case 3:
+                printf("Ingrese el monto a retirar: $");
+                scanf("%f", &monto);
+                // Se actualiza 'saldo' con lo que devuelva la función
+                saldo = retirar(saldo, monto);
+                break;
+            case 4:
+                printf("Saliendo del Gestor. !Ta' Lue'!\n");
+                break;
+            default:
+                printf("Por favor, ingrese un numero del 1 al 4.\n");
+                break;
+        }
+    } while (opcion != 4);
+    return 0;
+}
