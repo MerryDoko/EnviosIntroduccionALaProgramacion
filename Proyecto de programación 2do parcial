@@ -59,7 +59,7 @@ int main() {
  
     do {
         printf("\n=======================================\n");
-        printf("             MENU MAESTRO              \n");
+        printf("             MENU MAISTRO              \n");
         printf("=======================================\n");
         printf("Seleccione el codigo que quiere utilizar:\n");
         printf("1. Opcion 1: Proyecto #4 (Finanzas)\n");
@@ -137,7 +137,7 @@ int main() {
  
                         // If por si se quieren pasar de listos y ponen 0 o negativos
                         if (subtotal < 0) {
-                            printf("[ADVERTENCIA] El monto de la compra no puede ser negativo.\n");
+                            printf("[ADVERTENCIA] El monto de la compra no puede ser negativo. Ingrese un monto válido. \n");
                             // Aca cambiamos opcion un ratito para que no procese el switch y reinicie el menu antirobos aywey
                             opcion_p6 = 0;
                         }
@@ -176,12 +176,12 @@ int main() {
  
             // --- SALIR DEL PROGRAMA ---
             case 3:
-                printf("\nCerrando el sistema unificado. !Nos vemos!\n");
+                printf("Cerrando el sistema. !Ta' Lue'!\n");
                 break;
  
-            // --- ERROR EN MENU MAESTRO ---
+            // --- ERROR EN MENU MAISTRO ---
             default:
-                printf("\n[ERROR] Opcion no valida. Seleccione 1, 2 o 3.\n");
+                printf("Opcion no valida. Seleccione 1, 2 o 3.\n");
                 break;
         }
  
