@@ -1,0 +1,191 @@
+#include <stdio.h>
+ 
+// ==========================================
+// FUNCIONES DEL PROYECTO #4 (Finanzas)
+// ==========================================
+void consultarSaldo(float saldo) {
+    printf("Tu saldo actual es: $%.2f\n", saldo);
+}
+ 
+float depositar(float saldoActual, float monto) {
+    if (monto > 0) {
+        saldoActual = saldoActual + monto;
+        printf("Se depositaron correctamente $%.2f mxn a tu cuenta.\n", monto);
+    } else {
+        printf("El monto a depositar debe ser mayor a cero.\n");
+    }
+    return saldoActual;
+}
+ 
+float retirar(float saldoActual, float monto) {
+    if (monto <= 0) {
+        printf("Error. El monto a retirar debe ser mayor a cero.\n");
+    } else if (monto > saldoActual) {
+        printf("Fondos insuficientes. Intentas retirar $%.2f pero solo tienes $%.2f.\n", monto, saldoActual);
+    } else {
+        saldoActual = saldoActual - monto;
+        printf("Has retirado $%.2f de tu cuenta.\n", monto);
+    }
+    return saldoActual;
+}
+ 
+// ==========================================
+// FUNCIONES DEL PROYECTO #6 (Descuentos)
+// ==========================================
+float calcularDescuento(float total, float porcentaje) {
+    // Se divide el porcentaje entre 100 para obtener el decimal (Mates basicas hermano)
+    return total * (porcentaje / 100.0);
+}
+ 
+void imprimirTicket(float subtotal, float descuento, float total) {
+    printf("-----------------------------------\n");
+    printf("         TICKET DE COMPRA          \n");
+    printf("-----------------------------------\n");
+    printf("Subtotal:           $%.2f\n", subtotal);
+    printf("Descuento aplicado: $%.2f\n", descuento);
+    printf("-----------------------------------\n");
+    printf("TOTAL A PAGAR:      $%.2f\n", total);
+    printf("-----------------------------------\n");
+    printf("Le atendio Jhon C. Odigo \n");
+    printf("Gracias por comprar en Tiendas GatoBarato \n");
+    printf("-----------------------------------\n");
+}
+ 
+// ==========================================
+// FUNCION PRINCIPAL (MAIN) CON EL MENU MAESTRO
+// ==========================================
+int main() {
+    int opcion_principal;
+ 
+    do {
+        printf("\n=======================================\n");
+        printf("             MENU MAESTRO              \n");
+        printf("=======================================\n");
+        printf("Seleccione el codigo que quiere utilizar:\n");
+        printf("1. Opcion 1: Proyecto #4 (Finanzas)\n");
+        printf("2. Opcion 2: Proyecto #6 (Sistema de Descuentos)\n");
+        printf("3. Salir del programa completo\n");
+        printf("=======================================\n");
+        printf("Ingrese una opcion: ");
+        scanf("%d", &opcion_principal);
+ 
+        switch (opcion_principal) {
+            
+            // --- INICIO PROYECTO 4 ---
+            case 1: {
+                float saldo = 1529.23; // Un saldo todo random pa probar
+                int opcion_p4;
+                float monto;
+ 
+                do {
+                    printf("\n---------------------------------------\n");
+                    printf("4. Gestor de Finanzas Personales (Simulador)\n");
+                    printf("--------------------------------------- \n");
+                    printf("1. Consultar Saldo\n");
+                    printf("2. Depositar Dinero\n");
+                    printf("3. Retirar Dinero\n");
+                    printf("4. Regresar al Menu Maestro\n");
+                    printf("---------------------------------------\n");
+                    printf("Ingrese una opcion: ");
+                    scanf("%d", &opcion_p4);
+ 
+                    switch (opcion_p4) {
+                        case 1:
+                            consultarSaldo(saldo);
+                            break;
+                        case 2:
+                            printf("Ingrese el monto a depositar: $");
+                            scanf("%f", &monto);
+                            saldo = depositar(saldo, monto);
+                            break;
+                        case 3:
+                            printf("Ingrese el monto a retirar: $");
+                            scanf("%f", &monto);
+                            saldo = retirar(saldo, monto);
+                            break;
+                        case 4:
+                            printf("Saliendo del Gestor. !Ta' Lue'!\n");
+                            break;
+                        default:
+                            printf("Por favor, ingrese un numero del 1 al 4.\n");
+                            break;
+                    }
+                } while (opcion_p4 != 4);
+                
+                break;
+            } // --- FIN PROYECTO 4 ---
+ 
+            // --- INICIO PROYECTO 6 ---
+            case 2: {
+                int opcion_p6;
+                float subtotal, descuento, total_final;
+ 
+                do {
+                    printf("\nSISTEMA DE DESCUENTOS EN TIENDA\n");
+                    printf("-----------------------------------\n");
+                    printf("1. Cliente Regular (0%% de descuento)\n");
+                    printf("2. Cliente Frecuente (10%% de descuento)\n");
+                    printf("3. Cliente VIP (20%% de descuento)\n");
+                    printf("4. Regresar al Menu Maestro \n");
+                    printf("-----------------------------------\n");
+                    printf("Seleccione su tipo de membresia: ");
+                    scanf("%d", &opcion_p6);
+ 
+                    if (opcion_p6 >= 1 && opcion_p6 <= 3) {
+                        printf("Ingrese el monto total de la compra (Subtotal): $");
+                        scanf("%f", &subtotal);
+ 
+                        // If por si se quieren pasar de listos y ponen 0 o negativos
+                        if (subtotal < 0) {
+                            printf("[ADVERTENCIA] El monto de la compra no puede ser negativo.\n");
+                            // Aca cambiamos opcion un ratito para que no procese el switch y reinicie el menu antirobos aywey
+                            opcion_p6 = 0;
+                        }
+                    }
+ 
+                    switch (opcion_p6) {
+                        case 1:
+                            descuento = calcularDescuento(subtotal, 0.0);
+                            total_final = subtotal - descuento;
+                            imprimirTicket(subtotal, descuento, total_final);
+                            break;
+                        case 2:
+                            descuento = calcularDescuento(subtotal, 10.0);
+                            total_final = subtotal - descuento;
+                            imprimirTicket(subtotal, descuento, total_final);
+                            break;
+                        case 3:
+                            descuento = calcularDescuento(subtotal, 20.0);
+                            total_final = subtotal - descuento;
+                            imprimirTicket(subtotal, descuento, total_final);
+                            break;
+                        case 4:
+                            printf("Gracias por usar el sistema de cobro. ¡Ta' Lue'!\n");
+                            break;
+                        case 0:
+                            // Este esta por si meten un monto negativo, se reinicia el proceso
+                            break;
+                        default:
+                            printf("Opcion no valida. Ingrese un numero del 1 al 4.\n");
+                            break;
+                    }
+                } while (opcion_p6 != 4);
+                
+                break;
+            } // --- FIN PROYECTO 6 ---
+ 
+            // --- SALIR DEL PROGRAMA ---
+            case 3:
+                printf("\nCerrando el sistema unificado. !Nos vemos!\n");
+                break;
+ 
+            // --- ERROR EN MENU MAESTRO ---
+            default:
+                printf("\n[ERROR] Opcion no valida. Seleccione 1, 2 o 3.\n");
+                break;
+        }
+ 
+    } while (opcion_principal != 3);
+ 
+    return 0;
+}
