@@ -1,0 +1,151 @@
+#include <stdio.h>
+ 
+void mostrarMenu() {
+    
+    //Pues muestra el menú nomanches
+    
+    printf("===== SIMULADOR DE TRAFICO =====\n");
+    printf("1. Activar avenida principal\n");
+    printf("2. Activar calle secundaria\n");
+    printf("3. Consultar estado del trafico\n");
+    printf("4. Avanzar al siguiente ciclo\n");
+    printf("5. Finalizar simulacion\n");
+    printf("================================\n");
+    printf("Ingrese una opcion: ");
+}
+
+
+//dioslibrame de esto 
+void activarAvenida(int *espera, int *avanzados, int *tiempo) {
+    int llegadas, pasan;
+    int capacidad = 20; // Límite de autos que pasan
+    int duracion = 40;  // Segundos que dura el semáforo en pasele
+
+    printf("AVENIDA BUENAVISTA \n");
+    printf("¿Cuantos carros nuevos llegaron?: ");
+    scanf("%d", &llegadas);
+    
+    if (llegadas > 0) {
+        *espera = *espera + llegadas;
+    }
+
+    // Aquí se calcula cuantos pasan y cuantos se van a quedar en espera
+    if (*espera >= capacidad) {
+        pasan = capacidad;
+        *espera = *espera - capacidad; // Los que sobran se quedan esperando, resta básica
+    } else {
+        pasan = *espera;
+        *espera = 0; // Pasaron todos los que había, se pone así para que no de negativo de autos
+    }
+
+    *avanzados = *avanzados + pasan;
+    *tiempo = *tiempo + duracion;
+
+    printf("Semaforo en VERDE. Avanzaron %d vehiculos.\n", pasan);
+    printf("Fila de espera actual es de: %d vehiculos.\n", *espera);
+}
+
+//dioslibrame de esto2
+void activarSecundaria(int *espera, int *avanzados, int *tiempo) {
+    int llegadas, pasan;
+    int capacidad = 15; // Límite de autos que pasan
+    int duracion = 25;  // Segundos que dura el semáforo en pasele
+
+    printf("AVENIDA KIRK \n");
+    printf("¿Cuantos carros nuevos llegaron?: ");
+    scanf("%d", &llegadas);
+    
+    if (llegadas > 0) {
+        *espera = *espera + llegadas;
+    }
+
+    // Aquí se calcula cuantos pasan y cuantos se van a quedar en espera
+    if (*espera >= capacidad) {
+        pasan = capacidad;
+        *espera = *espera - capacidad; // Los que sobran se quedan esperando, resta básica
+    } else {
+        pasan = *espera;
+        *espera = 0; // Pasaron todos los que había, se pone así para que no de negativo de autos
+    }
+
+    *avanzados = *avanzados + pasan;
+    *tiempo = *tiempo + duracion;
+
+    printf("Semaforo en VERDE. Avanzaron %d vehiculos.\n", pasan);
+    printf("Fila de espera actual es de: %d vehiculos.\n", *espera);
+}
+
+void consultarEstado(int espera_p, int espera_s, int avanzados, int tiempo, int ciclo) {
+    printf("--- ESTADO DEL TRAFICO (Ciclo %d/10) ---\n", ciclo);
+    printf("Vehiculos esperando (Av. Buenavista): %d\n", espera_p);
+    printf("Vehiculos esperando (Av. Kirk): %d\n", espera_s);
+    printf("Total de vehiculos que han avanzado: %d\n", avanzados);
+    printf("Tiempo total transcurrido: %d segundos\n", tiempo);
+    printf("----------------------------------------\n");
+}
+
+void mostrarReporte(int avanzados, int espera_p, int espera_s, int tiempo) {
+    printf("========================================\n");
+    printf("      REPORTE FINAL      \n");
+    printf("========================================\n");
+    printf("Total de vehiculos que avanzaron: %d\n", avanzados);
+    printf("Vehiculos atorados (Av. Buenavista): %d\n", espera_p);
+    printf("Vehiculos atorados (Av. Kirk): %d\n", espera_s);
+    printf("Tiempo total: %d segundos\n", tiempo);
+    printf("========================================\n");
+}
+
+int main() {
+    int opcion;
+    int ciclo = 1; //porque tiene que empezar desde el principio 
+    
+    // Contadores de los que cuentan , los espera son los que están desde ciclo 0 al iniciard
+    int espera_principal = 12;
+    int espera_secundaria = 20;
+    int total_avanzados = 0;
+    int tiempo_total = 0;
+
+    do {
+        mostrarMenu();
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                activarAvenida(&espera_principal, &total_avanzados, &tiempo_total);
+                break;
+                
+            case 2:
+                activarSecundaria(&espera_secundaria, &total_avanzados, &tiempo_total);
+                break;
+                
+            case 3:
+                consultarEstado(espera_principal, espera_secundaria, total_avanzados, tiempo_total, ciclo);
+                break;
+                //estas variables solo consultan info, no modifican, entonces no usamos &, solo las llamamos
+                
+            case 4:
+                if (ciclo >= 10) {
+                    printf("Se han completado los 10 ciclos, finalizando\n");
+                    opcion = 5;
+                } else {
+                    ciclo++;
+                    printf("Ciclo terminado. Avanzando al ciclo %d/10\n", ciclo);
+                }
+                break;
+                
+            case 5:
+                printf("Finalizando la simulacion manualmente\n");
+                break;
+                
+            default:
+                printf("Opcion no valida. Seleccione un numero del 1 al 5.\n");
+                break;
+        }
+
+    } while (opcion != 5);
+    
+    //Muestra el reporte
+    mostrarReporte(total_avanzados, espera_principal, espera_secundaria, tiempo_total);
+
+    return 0;
+}
