@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main() {
+
+  int valores[5];
+
+  printf("Ingrese 5 números:\n");
+  
+    //el for que te lee los 5 números
+
+  for(int i = 0; i < 5; ++i) {
+     scanf("%d", &valores[i]);
+  }
+
+  printf("MOSTRANDO TODOS LOS NÚMEROS INTRODUCIDOS: \n");
+    
+    //el for que te da los 5 valores
+  for(int i = 0; i < 5; ++i) {
+     printf("%d,", valores[i]);
+  }
+
+    //print el primero y el útlimo
+  printf("Su primer número fué %d \n", valores[0]);
+  printf("Su último número fué %d \n", valores[4]);
+  
+  return 0;
+}
