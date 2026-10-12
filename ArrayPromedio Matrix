@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+int main() {
+    float lamatrix[5][5];
+    int i, j;
+
+    // Pide calificaciones
+    printf("Ingrese las calificaciones:\n");
+    for (i = 0; i < 5; i++) {
+        printf("Alumno %d\n", i + 1);
+        for (j = 0; j < 5; j++) {
+            printf("Ingrese la calificacion %d: ", j + 1);
+            scanf("%f", &lamatrix[i][j]);
+        }
+    }
+
+    for (i = 0; i < 5; i++) {
+        float suma = 0.0;
+        
+        // Imprimir las notas de cada alumno
+        for (j = 0; j < 5; j++) {
+            printf("%.2f,", lamatrix[i][j]);
+            suma += lamatrix[i][j]; // Acumuladores parra
+        }
+
+        float promedio = suma / 5.0;
+        printf("Promedio: %.2f\n", promedio);
+    }
+
+    return 0;
+}
