@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+int main() {
+    int numeros[8];
+    int pares[8], impares[8];
+    int contPares = 0, contImpares = 0;
+
+    printf("Ingrese 8 números enteros:\n");
+    for(int i = 0; i < 8; ++i) {
+        scanf("%d", &numeros[i]);
+        
+        // Par o impar
+        if(numeros[i] % 2 == 0) {
+            pares[contPares] = numeros[i];
+            contPares++;
+        } else {
+            impares[contImpares] = numeros[i];
+            contImpares++;
+        }
+    }
+
+    printf("Números pares:\n");
+    for(int i = 0; i < contPares; ++i) {
+        printf("%d ", pares[i]);
+    }
+
+    printf("\n\nNúmeros impares:\n");
+    for(int i = 0; i < contImpares; ++i) {
+        printf("%d ", impares[i]);
+    }
+
+    return 0;
+}
