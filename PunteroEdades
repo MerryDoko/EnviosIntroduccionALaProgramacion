@@ -1,0 +1,68 @@
+#include <stdio.h>
+
+int main() {
+    
+    // Declaración de las variables para las dos edades
+    int edad1 = 17;
+    int edad2 = 25;
+    
+    // Declaración de un único puntero
+    int *punteroEdad = NULL;
+    
+    printf("PRIMERA EDAD\n");
+    punteroEdad = &edad1; // El puntero apunta a la primera edad
+    
+    printf("Valor original de edad 1: %d\n", *punteroEdad);
+    printf("Dirección de memoria edad 1: %p\n", punteroEdad);
+    
+    // Modificando a través del puntero
+    *punteroEdad = 18; 
+    printf("Valor de edad 1 después de modificar: %d\n\n", edad1);
+    
+    printf("Segunda edad con el mismo puntero\n");
+    punteroEdad = &edad2; // Reutilizamos el puntero
+    
+    printf("Valor original de edad 2: %d\n", *punteroEdad);
+    printf("Dirección almacenada en el puntero (edad 2): %p\n", punteroEdad);
+    
+    // Modificando la segunda edad a través del puntero
+    *punteroEdad = 30;
+    printf("Valor de edad 2 después de modificar: %d\n\n", edad2);
+    
+    
+    //Elegir qué edad modificar
+    printf("--- Selección de usuario --- \n");
+    int opcion;
+    
+    printf("¿A qué persona deseas cambiarle la edad?\n");
+    printf("1. Persona 1 (Edad actual: %d)\n", edad1);
+    printf("2. Persona 2 (Edad actual: %d)\n", edad2);
+    printf("Selecciona una opcion (1 o 2): ");
+    scanf("%d", &opcion);
+    
+    // Redirigir el puntero según la elección del usuario
+    
+    if (opcion == 1) {
+        punteroEdad = &edad1;
+        printf("\nHas elegido la Persona 1.\n");
+    } else if (opcion == 2) {
+        punteroEdad = &edad2;
+        printf("\nHas elegido la Persona 2.\n");
+    } else {
+        printf("\nOpción inválida.\n");
+        return 1;
+    }
+    
+    // Pedir el nuevo valor y guardarlo usando directamente el puntero
+    printf("Introduce la nueva edad: ");
+    scanf("%d", punteroEdad);
+    
+    //-------------------------------------------
+    
+    printf("\nRESULTADOS FINALES\n");
+    printf("Edad de la Persona 1: %d\n", edad1);
+    printf("Edad de la Persona 2: %d\n", edad2);
+    printf("Dirección de memoria: %p\n", punteroEdad);
+     
+    return 0;
+}
