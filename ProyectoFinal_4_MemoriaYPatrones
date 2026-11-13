@@ -1,0 +1,170 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include <ctype.h>
+
+// CONFIG
+#define FILAS 3
+#define COLUMNAS 3
+#define MAX_SECUENCIA 100 // Límite máximo de rondas/símbolos
+
+// LIBRERIA PROPIA, TIENE ADAPTACIÓN PARA SISTEMAS OJO AHÍ
+void limpiar_pantalla();
+
+// SIRVE PARA DAR TIEMPO A MEMORIZAR
+void esperar_segundos(int segundos);
+
+// MOSTRAR TABLERO
+void mostrar_tablero(char tablero[FILAS][COLUMNAS]);
+
+// ----------------------------------------------------
+// ----------------------- MAIN -----------------------
+// ----------------------------------------------------
+
+int main() {
+
+    char tablero[FILAS][COLUMNAS] = {
+        {'A', 'B', 'C'},
+        {'D', 'E', 'F'},
+        {'G', 'H', 'I'}
+    };
+
+    int record_maximo = 0;
+    int jugar = 1;
+
+    // Aqui ocurre el random según el tiempo
+    srand(time(NULL));
+
+    while (jugar) {
+        char secuencia[MAX_SECUENCIA] = ""; // Acá se guarda la secuencia para recordar
+        char respuesta_usuario[MAX_SECUENCIA] = "";
+        int ronda = 1;
+        int puntuacion_actual = 0;
+        int perdedor = 0;
+        
+        // Vidas y rondas
+        int vidas = 3; 
+        int nueva_ronda = 1; // 1 = agregar letra nueva, 0 = repetir ronda actual
+
+        while (!perdedor && ronda < MAX_SECUENCIA) {
+            limpiar_pantalla();
+            printf("--- JUEGO DE MEMORIA Y PATRONES ---\n");
+            
+            // Muestra las vidas actuales en pantalla
+            printf("Record Actual: %d | Ronda: %d | Vidas: %d\n\n", record_maximo, ronda, vidas);
+            mostrar_tablero(tablero);
+
+            //Solo aumenta la dificultad si es una ronda nueva
+            if (nueva_ronda == 1) {
+                int fila_aleatoria = rand() % FILAS;
+                int col_aleatoria = rand() % COLUMNAS;
+                int longitud_actual = strlen(secuencia);
+                secuencia[longitud_actual] = tablero[fila_aleatoria][col_aleatoria];
+                secuencia[longitud_actual + 1] = '\0';
+            }
+
+            // Mostrar secuencia
+            printf("\nMEMORIZA LA SIGUIENTE SECUENCIA:\n");
+            printf(">> %s <<\n", secuencia);
+
+            // Tiempo para memorizar 
+            int tiempo_espera = 2 + (ronda / 3); 
+            printf("\nTienes %d segundos...", tiempo_espera);
+            esperar_segundos(tiempo_espera);
+
+            // Ocultar secuencia
+            limpiar_pantalla();
+
+            // Pedir respuesta
+            printf("--- JUEGO DE MEMORIA Y PATRONES ---\n\n");
+            printf("¡ Te toca !\nIngresa la secuencia de corrido (ejemplo: ABC) y presiona Enter:\n> ");
+            scanf("%99s", respuesta_usuario);
+
+            // ctype toupper todo chad
+            for (int i = 0; respuesta_usuario[i] != '\0'; i++) {
+                respuesta_usuario[i] = toupper(respuesta_usuario[i]);
+            }
+
+            // Comparar respuestas y calcular aciertos caracter por caracter
+            int aciertos = 0;
+            int len_respuesta = strlen(respuesta_usuario);
+
+            for (int i = 0; i < strlen(secuencia); i++) {
+                if (i < len_respuesta && secuencia[i] == respuesta_usuario[i]) {
+                    aciertos++;
+                } else {
+                    break;
+                }
+            }
+
+            // Validar resultado de la ronda
+            if (aciertos == strlen(secuencia)) {
+                printf("\n¡Le atinaste! Pasas a la siguiente ronda.\n");
+                puntuacion_actual += aciertos; // Suma puntos por cada acierto
+                ronda++;
+                nueva_ronda = 1;
+                esperar_segundos(2);
+            } else {
+                vidas--; //baja una
+                
+                printf("\n¡INCORRECTO!\n");
+                printf("Tuviste %d aciertos consecutivos antes de equivocarte.\n", aciertos);
+                printf("La secuencia original era : %s\n", secuencia);
+                printf("Tu respuesta fue          : %s\n", respuesta_usuario);
+                
+                // Verificación de vidas
+                if (vidas > 0) {
+                    printf("\n¡Perdiste una vida! Te quedan %d vidas.\n", vidas);
+                    printf("Vuelve a intenralo...\n");
+                    nueva_ronda = 0; // No pasa de ronda
+                    esperar_segundos(5); // más tiempo para que piense
+                } else {
+                    printf("\n¡Te has quedado sin vidas!\n");
+                    perdedor = 1; // termina el juego
+                }
+            }
+        }
+
+        // Gestionar records
+        printf("\n--- FIN DEL JUEGO ---\n");
+        printf("Puntuacion de esta partida: %d\n", puntuacion_actual);
+        if (puntuacion_actual > record_maximo) {
+            record_maximo = puntuacion_actual;
+            printf("¡FELICIDADES! ¡Has logrado un NUEVO RECORD!\n");
+        }
+
+        // Volver a jugar
+        printf("\n¿Quieres jugar otra vez? (1 = Si, 0 = No): ");
+        scanf("%d", &jugar);
+    }
+
+    printf("\nGracias por jugar. ¡Ta' Lue'!\n");
+    return 0;
+}
+
+// FUNCIONES / LIBRERIAS DE AQUÍ OJO AL DATASO
+void limpiar_pantalla() {
+    // Pa que no lo adapte
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void esperar_segundos(int segundos) {
+    time_t tiempo_inicio = time(NULL);
+    while (time(NULL) - tiempo_inicio < segundos) {
+    }
+}
+
+void mostrar_tablero(char tablero[FILAS][COLUMNAS]) {
+    printf("Simbolos Disponibles:\n");
+    for (int i = 0; i < FILAS; i++) {
+        for (int j = 0; j < COLUMNAS; j++) {
+            printf("[%c] ", tablero[i][j]);
+        }
+        printf("\n");
+    }
+}
